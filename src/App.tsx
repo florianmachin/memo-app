@@ -5,7 +5,7 @@ import Listing from "./components/Listing";
 function App() {
   return (
     <div className="App">
-      <h1>Post It App</h1>
+      <h1 >Post It App</h1>
       <Listing />
     </div>
   );

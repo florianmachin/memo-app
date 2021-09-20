@@ -39,16 +39,20 @@ export default function Listing() {
       setTotal(r.data.length);
       console.log(r.data);
     });
-  }, [data]);
+
+  }, []);
 
   return (
     <div style={styles.content}>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <h3>Total: {total}</h3>
+      <div style={{ display: "flex", gap: "10px", flexDirection:"column"}}>
+
+      <h3>Total: {total}</h3>
+        <div style={{display: "flex", gap:"10px"}}>
         <Fab color="primary" onClick={() => setOpen(true)}>
           +
         </Fab>
         <SearchBar keyword={input} setKeyword={updateInput} />
+    </div>
       </div>
       <PostItForm open={open} setOpen={setOpen} />
       <TableContainer style={styles.table}>

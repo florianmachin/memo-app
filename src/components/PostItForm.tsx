@@ -1,26 +1,12 @@
-import { Box, Modal } from "@mui/material";
+import {Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar} from "@mui/material";
 import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import { routes } from "../routes";
 import * as Yup from "yup";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
-
 const FormSchema = Yup.object().shape({
-  title: Yup.string().max(30, "Trop grand!").required("Requis"),
+  title: Yup.string().max(60, "Trop grand!").required("Requis"),
 });
 
 type Props = {
@@ -29,39 +15,40 @@ type Props = {
 };
 
 export default function PostItForm({ open, setOpen }: Props) {
-  const [isSuccessMessageVisible, setIsSuccessMessageVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
 
   return (
     <div>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ ...style }}>
+      <Snackbar open={isSuccess} autoHideDuration={6000} onClose={() => setIsSuccess(false)}>
+        <Alert onClose={() => setIsSuccess(false)} severity="success" >
+          Ajoutée avec succès !
+        </Alert>
+      </Snackbar>
+
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Ajouter une note</DialogTitle>
+        <DialogContent>
           <Formik
             initialValues={{
               title: "",
-              date: new Date().toJSON(),
+              date: new Date().toDateString(),
               isDone: false,
             }}
             validationSchema={FormSchema}
             onSubmit={(values) => {
-              setIsSuccessMessageVisible(false);
               axios.post(routes.url + routes.postit, values).then((r) => {
-                setIsSuccessMessageVisible(true);
-                setTimeout(() => {
-                  setIsSuccessMessageVisible(false);
-                }, 10000);
+                setIsSuccess(true);
                 console.log(r.data);
                 setOpen(false);
               });
             }}
           >
+
+
             {({ errors, touched }) => (
+
               <Form className="form">
-                <div
-                  className={isSuccessMessageVisible ? "success" : "d-none"}
-                  id="success-message"
-                >
-                  Envoyé avec succès
-                </div>
                 <div className="input-group form-group d-flex flex-column">
                   <span>Nom</span>
                   <Field name="title" className="form-control w-100" />
@@ -69,12 +56,14 @@ export default function PostItForm({ open, setOpen }: Props) {
                     <div className="error">{errors.title}</div>
                   ) : null}
                 </div>
-                <button type="submit">Submit</button>
+                <DialogActions>
+                  <Button type="submit">Submit</Button>
+                </DialogActions>
               </Form>
             )}
           </Formik>
-        </Box>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
