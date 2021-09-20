@@ -1,0 +1,8 @@
+.rt-tr-group {
+  background: green;
+  border: 3px solid black;
+}
+
+.rt-tr-group:nth-of-type(even) {
+  background: red;
+}
