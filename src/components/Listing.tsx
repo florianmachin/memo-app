@@ -17,14 +17,14 @@ import SearchBar from "../utils/SearchBar";
 import { PostItModel } from "../models/PostItModel";
 
 export default function Listing() {
-  const [input, setInput] = useState("");// SearchBar
+  const [input, setInput] = useState(""); // SearchBar
   const [data, setData] = useState<PostItModel[]>([]); // Données du tableau
   const [dataDefault, setDataDefault] = useState([]); //Utilisé afin de réinitialiser la SearchBar après une recherche
-  const [open, setOpen] = useState(false);// Ouvrir la modal
+  const [open, setOpen] = useState(false); // Ouvrir la modal
   const [total, setTotal] = useState();
   const [fetchData, setFetchData] = useState(true);
 
-  const triggerDataFetch = () => setFetchData(t => !t); //Actualiser le tableau sans infinite loop
+  const triggerDataFetch = () => setFetchData((t) => !t); //Actualiser le tableau sans infinite loop
 
   const updateInput = async (input: any) => {
     const filtered = dataDefault.filter((row) => {
@@ -37,24 +37,27 @@ export default function Listing() {
 
   useEffect(() => {
     axios.get(routes.url + routes.posts).then((r) => {
-      setData(r.data)
+      setData(r.data);
       setDataDefault(r.data);
       setTotal(r.data.length);
     });
   }, [fetchData]);
   return (
     <div style={styles.content}>
-      <div style={{ display: "flex", gap: "10px", flexDirection:"column"}}>
-
-      <h3>Total: {total}</h3>
-        <div style={{display: "flex", gap:"10px"}}>
-        <Fab color="primary" onClick={() => setOpen(true)}>
-          +
-        </Fab>
-        <SearchBar keyword={input} setKeyword={updateInput} />
-    </div>
+      <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+        <h3>Total: {total}</h3>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Fab color="primary" onClick={() => setOpen(true)}>
+            +
+          </Fab>
+          <SearchBar keyword={input} setKeyword={updateInput} />
+        </div>
       </div>
-      <PostItForm open={open} setOpen={setOpen} triggerDataFetch={triggerDataFetch}/>
+      <PostItForm
+        open={open}
+        setOpen={setOpen}
+        triggerDataFetch={triggerDataFetch}
+      />
       <TableContainer style={styles.table}>
         <Table>
           <colgroup>
@@ -71,9 +74,17 @@ export default function Listing() {
             </TableRow>
           </TableHead>
           <TableBody className="list">
-            {data.map(({ id, title, date }, index) => (
-              <PostItItem id={id} title={title} date={date} index={index} triggerDataFetch={triggerDataFetch}/>
-            ))}
+            {data
+              .map(({ id, title, date }, index) => (
+                <PostItItem
+                  id={id}
+                  title={title}
+                  date={date}
+                  index={index}
+                  triggerDataFetch={triggerDataFetch}
+                />
+              ))
+              .sort((a) => a.props.date)}
             {data.length === 0 && (
               <TableRow>
                 <TableCell colSpan={3} style={{ textAlign: "center" }}>
