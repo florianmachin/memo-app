@@ -3,4 +3,5 @@ export interface PostItModel {
   title: string;
   date: string;
   index: number;
+  triggerDataFetch: any
 }

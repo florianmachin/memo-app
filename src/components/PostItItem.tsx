@@ -8,7 +8,7 @@ import "../styles/PostItItem.css";
 import { PostItModel } from "../models/PostItModel";
 import {Alert, Dialog, DialogContent, DialogContentText, DialogTitle, Snackbar} from "@mui/material";
 
-export default function ({ id, title, date, index }: PostItModel) {
+export default function ({ id, title, date, index, triggerDataFetch }: PostItModel) {
   const [isDone, setIsDone] = useState(
     localStorage.getItem("done-" + id) === "true"
   );
@@ -58,9 +58,10 @@ export default function ({ id, title, date, index }: PostItModel) {
           <a
             href="#"
             onClick={() => {
-              axios.delete(routes.url + routes.postit + "/" + id).then((r) => {
+              axios.delete(routes.url + routes.posts + "/" + id).then((r) => {
                 console.log(r.data);
                 setIsDelete(true)
+                triggerDataFetch()
               });
             }}
           >
