@@ -59,6 +59,7 @@ export default function PostItForm({ open, setOpen, triggerDataFetch }: Props) {
             {({ errors, touched }) => (
               <Form className="form">
                 <div className="input-group form-group d-flex flex-column">
+                  <span>Libellé</span>
                   <Field
                     name="title"
                     label="Nom"
