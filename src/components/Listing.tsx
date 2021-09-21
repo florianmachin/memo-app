@@ -87,7 +87,7 @@ export default function Listing() {
               .sort((a) => a.props.date)}
             {data.length === 0 && (
               <TableRow>
-                <TableCell colSpan={3} style={{ textAlign: "center" }}>
+                <TableCell colSpan={4} style={{ textAlign: "center" }}>
                   Pas d'enregistrements correspondants.
                 </TableCell>
               </TableRow>
